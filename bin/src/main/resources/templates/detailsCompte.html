@@ -1,0 +1,62 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymleaf.org">
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Details Comptes</title>
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+</head>
+</head>
+
+<body>
+	<div th:replace="navbar :: navbar"></div>
+	<h3 class="mt-3" th:text="'Les détails du compte du ' + ${compte.titulaire}"></h3>
+
+	<table class="table table-striped table-dark bg-dark bg-gradient mt-4">
+		<thead>
+			<th>Id</th>
+			<th>Titulaire</th>
+			<th>Solde</th>
+
+		</thead>
+		<tbody>
+			<tr>
+				<td th:text="${compte.id}"></td>
+				<td th:text="${compte.titulaire}"></td>
+				<td th:text="${compte.solde}"></td>
+
+			</tr>
+		</tbody>
+	</table>
+	<form th:action="@{'/comptes/' + ${compte.id} + '/depot'}" method="post"
+		class="border p-4 rounded shadow bg-light w-50 mx-auto">
+
+		<div class="mb-3 d-flex align-items-center">
+			<label for="montant_depot" class="form-label me-2 mb-0" style="min-width: 70px;">Dépôt :</label>
+			<input type="number" name="montant_depot" id="montant_depot" class="form-control form-control-sm w-50"
+				placeholder="Montant..." />
+		</div>
+
+		<div class="text-end">
+			<button type="submit" class="btn btn-sm btn-success">Valider</button>
+		</div>
+
+	</form>
+
+	<form th:action="@{'/comptes/' + ${compte.id} + '/retrait'}" method="post"
+		class="border p-4 rounded shadow bg-light w-50 mx-auto">
+
+		<div class="mb-3 d-flex align-items-center">
+			<label for="montant_retrait" class="form-label me-2 mb-0" style="min-width: 70px;">Retrait:</label>
+			<input type="number" name="montant_retrait" id="montant_retrait" class="form-control form-control-sm w-50"
+				placeholder="Montant..." />
+		</div>
+		<div class="text-end">
+			<button type="submit" class="btn btn-sm btn-success">Valider</button>
+		</div>
+	</form>
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>

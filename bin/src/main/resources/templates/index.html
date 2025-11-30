@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymleaf.org">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Accueil</title>
+	<!-- Lien vers le CSS de Bootstrap -->
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+</head>
+<div th:replace="navbar :: navbar"></div>
+
+<body class="bg-light">
+
+
+	<div class="container py-5">
+		<h1 class="text-center mb-5">Bienvenue sur la page d'accueil 🌟</h1>
+
+		<div class="row row-cols-1 row-cols-md-2 g-4">
+			<!-- Carte pour Ajouter un compte -->
+			<div class="col">
+				<div class="card h-100 text-center shadow-sm">
+					<div class="card-body">
+						<h5 class="card-title">➕ Ajouter un compte</h5>
+						<a href="ajouter" class="btn btn-primary mt-3">Ajouter</a>
+					</div>
+				</div>
+			</div>
+
+			<!-- Carte pour Liste des comptes -->
+			<div class="col">
+				<div class="card h-100 text-center shadow-sm">
+					<div class="card-body">
+						<h5 class="card-title">📄 Liste des comptes</h5>
+						<a href="comptes" class="btn btn-primary mt-3">Voir la liste</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+	<!-- Lien vers le JS de Bootstrap (optionnel si interactivité requise) -->
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>

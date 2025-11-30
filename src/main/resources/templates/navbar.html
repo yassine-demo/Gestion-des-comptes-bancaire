@@ -1,0 +1,187 @@
+<nav th:fragment="navbar" class="navbar navbar-expand-lg navbar-glass">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="/">
+            <i class="fas fa-user-shield me-2"></i>Gestion Comptes
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item">
+                    <a class="nav-link nav-link-glass" href="/ajouter">
+                        <i class="fas fa-user-plus me-2"></i> Ajouter un compte
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link nav-link-glass" href="/comptes">
+                        <i class="fas fa-users me-2"></i> Liste des comptes
+                    </a>
+                </li>
+
+                <!-- Profile dropdown -->
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle nav-link-glass d-flex align-items-center" href="#" role="button"
+                       data-bs-toggle="dropdown" aria-expanded="false">
+                        <img th:src="@{'/images/' + ${user.imagePath}}" alt="avatar"
+                             class="rounded-circle me-2" width="32" height="32" style="object-fit: cover;" onerror="this.onerror=null; this.src='/images/default-avatar.png';">
+                        <span th:text="${user.name}">Utilisateur</span>
+                        
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-glass dropdown-menu-end">
+                        <li>
+                            <a class="dropdown-item" href="/profile/edit">
+                                <i class="fas fa-user-edit me-2"></i>Modifier Profil
+                            </a>
+                        </li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li>
+                            <form th:action="@{/logout}" method="post" class="d-inline">
+                                <button type="submit" class="dropdown-item">
+                                    <i class="fas fa-sign-out-alt me-2"></i>Se déconnecter
+                                </button>
+                            </form>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<style>
+    /* Navbar Glassmorphism Styles */
+    .navbar-glass {
+        background: rgba(15, 32, 39, 0.85) !important;
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        box-shadow: 0 4px 30px rgba(0, 117, 117, 0.3);
+        padding: 0.5rem 1rem;
+        transition: all 0.4s ease;
+    }
+    
+    .navbar-glass.scrolled {
+        background: rgba(15, 32, 39, 0.95) !important;
+        box-shadow: 0 2px 20px rgba(0, 117, 117, 0.4);
+    }
+    
+    .navbar-brand {
+        font-weight: 1000;
+        color: rgba(255, 255, 255, 0.95) !important;
+        letter-spacing: 0.5px;
+        padding: 0.5rem 1rem;
+        border-radius: 8px;
+        transition: all 0.3s ease;
+        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+    }
+    
+    .navbar-brand:hover {
+        background: rgba(0, 117, 117, 0.2);
+        transform: translateY(-1px);
+        color: rgba(255, 255, 255, 1) !important;
+    }
+    
+    .nav-link-glass {
+        color: rgba(255, 255, 255, 0.9) !important; /* Lighter text */
+        margin: 0 0.25rem;
+        padding: 0.5rem 1rem !important;
+        border-radius: 8px;
+        transition: all 0.3s ease;
+        position: relative;
+        font-weight: 500;
+        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+    }
+    
+    .nav-link-glass:hover,
+    .nav-link-glass:focus,
+    .nav-link-glass.active {
+        color: rgba(255, 255, 255, 1) !important; /* Pure white on hover */
+        background: rgba(0, 117, 117, 0.3) !important;
+        transform: translateY(-1px);
+        text-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+    }
+    
+    .nav-link-glass::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        width: 0;
+        height: 2px;
+        background: rgba(255, 255, 255, 0.8); /* Lighter underline */
+        transition: all 0.3s ease;
+        transform: translateX(-50%);
+    }
+    
+    .nav-link-glass:hover::after,
+    .nav-link-glass.active::after {
+        width: 60%;
+    }
+    
+    /* Dropdown Glassmorphism */
+    .dropdown-menu-glass {
+        background: rgba(15, 32, 39, 0.95) !important; /* Slightly darker */
+        backdrop-filter: blur(15px);
+        -webkit-backdrop-filter: blur(15px);
+        border: 1px solid rgba(255, 255, 255, 0.15); /* Lighter border */
+        box-shadow: 0 8px 32px rgba(0, 117, 117, 0.4);
+        border-radius: 10px !important;
+        overflow: hidden;
+        padding: 0.5rem 0;
+        margin-top: 0.5rem !important;
+    }
+    
+    .dropdown-item {
+        color: rgba(255, 255, 255, 0.9) !important; /* Lighter text */
+        padding: 0.75rem 1.5rem !important; /* More padding */
+        transition: all 0.2s ease;
+        font-weight: 400;
+    }
+    
+    .dropdown-item:hover {
+        background: rgba(0, 117, 117, 0.4) !important; /* More visible hover */
+        color: rgba(255, 255, 255, 1) !important;
+        transform: translateX(5px); /* More pronounced movement */
+    }
+    
+    .dropdown-divider {
+        border-color: rgba(255, 255, 255, 0.15) !important; /* Lighter divider */
+        margin: 0.5rem 0;
+    }
+    
+    /* Toggler icon */
+    .navbar-toggler {
+        border: 1px solid rgba(255, 255, 255, 0.2) !important; /* Lighter border */
+        padding: 0.5rem !important;
+    }
+    
+    .navbar-toggler-icon {
+        background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%28255, 255, 255, 0.9%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e") !important;
+    }
+    
+    /* Avatar border animation */
+    .nav-link-glass img {
+        transition: all 0.3s ease;
+        border: 2px solid rgba(255, 255, 255, 0.2); 
+    }
+    
+    .nav-link-glass:hover img {
+        border-color: rgba(0, 117, 117, 0.6); 
+        box-shadow: 0 0 12px rgba(0, 117, 117, 0.4);
+    }
+</style>
+
+<script>
+    // Add scroll effect to navbar
+    window.addEventListener('scroll', function() {
+        const navbar = document.querySelector('.navbar-glass');
+        if (window.scrollY > 10) {
+            navbar.classList.add('scrolled');
+        } else {
+            navbar.classList.remove('scrolled');
+        }
+    });
+</script>

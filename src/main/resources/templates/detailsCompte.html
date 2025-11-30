@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Details Comptes</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        body {
+            margin: 0;
+            min-height: 100vh;
+            font-family: 'Segoe UI', sans-serif;
+            color: #fff;
+            background: linear-gradient(-45deg, #0f2027, #203a43, #2c5364, rgb(36, 80, 98), #0f2027);
+            background-size: 400% 400%;
+            animation: gradientBG 20s ease infinite;
+            padding-top: 80px;
+        }
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            box-shadow: 0 8px 32px rgb(0, 117, 117);
+            padding: 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            transition: all 0.7s ease;
+            margin-bottom: 2rem;
+        }
+
+        .glass-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 40px rgba(0, 117, 117, 0.6);
+        }
+
+        .page-title {
+            font-size: 2rem;
+            font-weight: 600;
+            margin-bottom: 2rem;
+            color: rgba(255, 255, 255, 0.9);
+            text-shadow: 0 2px 10px rgba(0, 117, 117, 0.7);
+            position: relative;
+            text-align: center;
+        }
+
+        .page-title::after {
+            content: '';
+            display: block;
+            width: 100px;
+            height: 4px;
+            background: linear-gradient(to right, rgba(0, 117, 117, 0.8), transparent);
+            margin: 15px auto 0;
+            border-radius: 2px;
+        }
+
+        .account-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            margin-bottom: 2rem;
+        }
+
+        .account-table th {
+            background: rgba(0, 117, 117, 0.3);
+            color: white;
+            padding: 1rem;
+            text-align: left;
+            font-weight: 500;
+        }
+
+        .account-table td {
+            padding: 1rem;
+            background: rgba(255, 255, 255, 0.07);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .account-table tr:first-child td:first-child {
+            border-top-left-radius: 8px;
+        }
+
+        .account-table tr:first-child td:last-child {
+            border-top-right-radius: 8px;
+        }
+
+        .account-table tr:last-child td:first-child {
+            border-bottom-left-radius: 8px;
+        }
+
+        .account-table tr:last-child td:last-child {
+            border-bottom-right-radius: 8px;
+        }
+
+        .transaction-form {
+            margin-bottom: 2rem;
+        }
+
+        .form-label {
+            color: rgba(255, 255, 255, 0.9);
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+        }
+
+        .form-label i {
+            margin-right: 10px;
+            font-size: 1.1rem;
+        }
+
+        .form-control {
+            background-color: rgba(255, 255, 255, 0.07);
+            border: none;
+            color: #fff;
+            height: 50px;
+            border-radius: 8px !important;
+            padding-left: 45px;
+            transition: all 0.3s ease;
+        }
+
+        .form-control:focus {
+            background-color: rgba(255, 255, 255, 0.15);
+            color: #fff;
+            box-shadow: 0 0 0 2px rgba(0, 117, 117, 0.5);
+        }
+
+        .input-icon {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: rgba(255, 255, 255, 0.7);
+            z-index: 4;
+        }
+
+        .input-group {
+            position: relative;
+            margin-bottom: 1.5rem;
+        }
+
+        .btn-animated {
+            position: relative;
+            overflow: hidden;
+            color: #fff;
+            border: none;
+            height: 50px;
+            font-weight: 600;
+            background: rgba(17, 17, 17, 0.7);
+            transition: all 0.3s ease;
+            border-radius: 8px;
+            width: 100%;
+            max-width: 200px;
+            margin: 0 auto;
+            display: block;
+        }
+
+        .btn-animated::before {
+            content: '';
+            position: absolute;
+            top: var(--y, 0);
+            left: var(--x, 0);
+            width: 260%;
+            height: 260%;
+            background: radial-gradient(circle at center, rgba(32, 58, 67, 0.8), rgb(0, 117, 117), rgb(31, 60, 71));
+            transform: translate(-50%, -50%);
+            transition: opacity 0.3s;
+            z-index: 1;
+            opacity: 0;
+            border-radius: 50%;
+        }
+
+        .btn-animated:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .btn-animated:hover::before {
+            opacity: 1;
+        }
+
+        .btn-animated span {
+            position: relative;
+            z-index: 2;
+        }
+
+        .btn-deposit {
+            background: rgba(25, 135, 84, 0.7);
+        }
+
+        .btn-withdraw {
+            background: rgba(220, 53, 69, 0.7);
+        }
+
+        /* Floating animation for card */
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+
+        .floating-card {
+            animation: float 6s ease-in-out infinite;
+        }
+
+        /* Currency styling */
+        .currency {
+            font-weight: bold;
+            color: rgba(0, 117, 117, 0.8);
+        }
+    </style>
+</head>
+
+<body>
+    <div th:replace="navbar :: navbar"></div>
+
+    <div class="container py-4">
+        <h1 class="page-title" th:text="'Détails du compte de ' + ${compte.titulaire}"></h1>
+
+        <div class="glass-card floating-card">
+            <table class="account-table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Titulaire</th>
+                        <th>Solde</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td th:text="${compte.id}"></td>
+                        <td th:text="${compte.titulaire}"></td>
+                        <td><span class="currency">$</span> <span th:text="${compte.solde}"></span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="glass-card transaction-form">
+                    <h3 class="text-center mb-4"><i class="fas fa-money-bill-wave me-2"></i>Dépôt</h3>
+                    <form th:action="@{'/comptes/' + ${compte.id} + '/depot'}" method="post">
+                        <div class="input-group">
+                            
+                            <label for="montant_depot" class="form-label">Montant</label>
+                            <input type="number" name="montant_depot" id="montant_depot" class="form-control" 
+                                   placeholder="Montant à déposer" step="0.01" min="0.01" required />
+                        </div>
+                        <button type="submit" class="btn btn-animated btn-deposit">
+                            <span><i class="fas fa-check-circle me-2"></i>Valider</span>
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="glass-card transaction-form">
+                    <h3 class="text-center mb-4"><i class="fas fa-money-bill-transfer me-2"></i>Retrait</h3>
+                    <form th:action="@{'/comptes/' + ${compte.id} + '/retrait'}" method="post">
+                        <div class="input-group">
+                         
+                            <label for="montant_retrait" class="form-label">Montant</label>
+                            <input type="number" name="montant_retrait" id="montant_retrait" class="form-control" 
+                                   placeholder="Montant à retirer" step="0.01" min="0.01" required />
+                        </div>
+                        <button type="submit" class="btn btn-animated btn-withdraw">
+                            <span><i class="fas fa-check-circle me-2"></i>Valider</span>
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Floating particles background -->
+    <canvas id="particles-canvas" style="position:fixed;top:0;left:0;width:100%;height:100%;z-index:-1;pointer-events:none;"></canvas>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+        // Animated buttons effect
+        document.querySelectorAll('.btn-animated').forEach(btn => {
+            btn.addEventListener('mousemove', e => {
+                const rect = btn.getBoundingClientRect();
+                btn.style.setProperty('--x', `${e.clientX - rect.left}px`);
+                btn.style.setProperty('--y', `${e.clientY - rect.top}px`);
+            });
+        });
+
+        // Particles animation
+        document.addEventListener('DOMContentLoaded', () => {
+            const canvas = document.getElementById('particles-canvas');
+            const ctx = canvas.getContext('2d');
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+
+            const particles = [];
+            const particleCount = 30;
+
+            for (let i = 0; i < particleCount; i++) {
+                particles.push({
+                    x: Math.random() * canvas.width,
+                    y: Math.random() * canvas.height,
+                    size: Math.random() * 3 + 1,
+                    speedX: Math.random() * 0.5 - 0.25,
+                    speedY: Math.random() * 0.5 - 0.25,
+                    color: `rgba(255, 255, 255, ${Math.random() * 0.3 + 0.1})`
+                });
+            }
+
+            function animateParticles() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                
+                for (let i = 0; i < particles.length; i++) {
+                    const p = particles[i];
+                    
+                    ctx.beginPath();
+                    ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+                    ctx.fillStyle = p.color;
+                    ctx.fill();
+                    
+                    p.x += p.speedX;
+                    p.y += p.speedY;
+                    
+                    if (p.x < 0 || p.x > canvas.width) p.speedX *= -1;
+                    if (p.y < 0 || p.y > canvas.height) p.speedY *= -1;
+                }
+                
+                requestAnimationFrame(animateParticles);
+            }
+
+            animateParticles();
+
+            window.addEventListener('resize', () => {
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
+            });
+        });
+    </script>
+</body>
+</html>

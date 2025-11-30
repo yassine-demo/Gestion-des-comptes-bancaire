@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Login</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Bootstrap + FontAwesome -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+
+    <style>
+        :root {
+            --dark-gradient-1: #0f2027;
+            --dark-gradient-2: #203a43;
+            --dark-gradient-3: #2c5364;
+            --dark-gradient-4: rgb(36, 80, 98);
+            --light-gradient-1: #f5f7fa;
+            --light-gradient-2: #c3cfe2;
+            --light-gradient-3: #a1b5d8;
+            --light-gradient-4: #7e9bc7;
+            --glass-bg-dark: rgba(255, 255, 255, 0.05);
+            --glass-bg-light: rgba(0, 0, 0, 0.05);
+            --glass-border-dark: rgba(255, 255, 255, 0.15);
+            --glass-border-light: rgba(0, 0, 0, 0.1);
+            --glass-shadow-dark: 0 8px 32px rgb(0, 117, 117);
+            --glass-shadow-light: 0 8px 32px rgba(0, 90, 150, 0.2);
+            --text-dark: #fff;
+            --text-light: #333;
+            --input-bg-dark: rgba(255, 255, 255, 0.07);
+            --input-bg-light: rgba(0, 0, 0, 0.05);
+            --input-focus-dark: rgba(255, 255, 255, 0.15);
+            --input-focus-light: rgba(0, 0, 0, 0.1);
+            --label-bg-dark: linear-gradient(to bottom, rgba(15, 32, 39, 0.9), rgba(15, 32, 39, 0.8));
+            --label-bg-light: linear-gradient(to bottom, rgba(245, 247, 250, 0.9), rgba(245, 247, 250, 0.8));
+            --btn-bg-dark: rgba(17, 17, 17, 0.7);
+            --btn-bg-light: rgba(255, 255, 255, 0.7);
+            --btn-radial-dark: radial-gradient(circle at center, rgba(32, 58, 67, 0.8), rgb(0, 117, 117), rgb(31, 60, 71));
+            --btn-radial-light: radial-gradient(circle at center, rgb(255, 255, 255), rgb(100, 150, 200), rgb(160, 180, 210));
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: 'Segoe UI', sans-serif;
+            color: var(--text-color);
+            background: linear-gradient(-45deg, var(--gradient-1), var(--gradient-2), var(--gradient-3), var(--gradient-4), var(--gradient-1));
+            background-size: 400% 400%;
+            animation: gradientBG 20s ease infinite;
+            transition: all 0.5s ease;
+        }
+
+        body.dark-mode {
+            --gradient-1: var(--dark-gradient-1);
+            --gradient-2: var(--dark-gradient-2);
+            --gradient-3: var(--dark-gradient-3);
+            --gradient-4: var(--dark-gradient-4);
+            --glass-bg: var(--glass-bg-dark);
+            --glass-border: var(--glass-border-dark);
+            --glass-shadow: var(--glass-shadow-dark);
+            --text-color: var(--text-dark);
+            --input-bg: var(--input-bg-dark);
+            --input-focus: var(--input-focus-dark);
+            --label-bg: var(--label-bg-dark);
+            --btn-bg: var(--btn-bg-dark);
+            --btn-radial: var(--btn-radial-dark);
+            --link-color: #ccc;
+            --link-hover: #fff;
+        }
+
+        body.light-mode {
+            --gradient-1: var(--light-gradient-1);
+            --gradient-2: var(--light-gradient-2);
+            --gradient-3: var(--light-gradient-3);
+            --gradient-4: var(--light-gradient-4);
+            --glass-bg: var(--glass-bg-light);
+            --glass-border: var(--glass-border-light);
+            --glass-shadow: var(--glass-shadow-light);
+            --text-color: var(--text-light);
+            --input-bg: var(--input-bg-light);
+            --input-focus: var(--input-focus-light);
+            --label-bg: var(--label-bg-light);
+            --btn-bg: var(--btn-bg-light);
+            --btn-radial: var(--btn-radial-light);
+            --link-color: #666;
+            --link-hover: #333;
+        }
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .glass-card {
+            background: var(--glass-bg);
+            border-radius: 20px;
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            box-shadow: var(--glass-shadow);
+            padding: 2rem;
+            width: 100%;
+            max-width: 400px;
+            border: 1px solid var(--glass-border);
+            transition: transform 0.7s ease;
+            color: var(--text-color);
+        }
+
+        .glass-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .input-group {
+            margin-bottom: 1.5rem;
+            position: relative;
+        }
+
+        .input-icon {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-color);
+            opacity: 0.7;
+            z-index: 4;
+        }
+
+        .form-control {
+            background-color: var(--input-bg);
+            border: none;
+            color: var(--text-color);
+            padding-left: 45px;
+            height: 50px;
+            border-radius: 8px !important;
+        }
+
+        .form-control:focus {
+            background-color: var(--input-focus);
+            color: var(--text-color);
+            box-shadow: 0 0 0 2px rgba(0, 117, 117, 0.3);
+        }
+
+        .form-label {
+            position: absolute;
+            top: -10px;
+            left: 40px;
+            font-size: 0.85rem;
+            background: var(--label-bg);
+            padding: 0 8px;
+            color: var(--text-color);
+            border-radius: 10px;
+            z-index: 5;
+        }
+
+        .btn-animated {
+            position: relative;
+            overflow: hidden;
+            color: var(--text-color);
+            border: none;
+            height: 48px;
+            font-weight: 600;
+            background: var(--btn-bg);
+            transition: all 0.3s ease;
+            border-radius: 8px;
+            width: 100%;
+        }
+
+        .btn-animated::before {
+            content: '';
+            position: absolute;
+            top: var(--y, 0);
+            left: var(--x, 0);
+            width: 260%;
+            height: 260%;
+            background: var(--btn-radial);
+            transform: translate(-50%, -50%);
+            transition: opacity 0.3s;
+            z-index: 1;
+            opacity: 0;
+            border-radius: 50%;
+        }
+
+        .btn-animated:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn-animated:hover::before {
+            opacity: 1;
+        }
+
+        .btn-animated span {
+            position: relative;
+            z-index: 2;
+        }
+
+        .signup-link, .forgot-password {
+            color: var(--link-color);
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+        }
+
+        .signup-link a:hover,
+        .forgot-password:hover {
+            color: var(--link-hover);
+            text-decoration: underline;
+        }
+
+        .alert-danger {
+            background-color: rgba(220, 53, 69, 0.2);
+            border-color: rgba(220, 53, 69, 0.3);
+            color: var(--text-color);
+        }
+
+        .card-title {
+            font-size: 1.7rem;
+            font-weight: bold;
+            margin-bottom: 1.5rem;
+            text-align: center;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Dark/Light Mode Toggle */
+        .theme-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+        }
+
+        .toggle-btn {
+            background: var(--glass-bg);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border);
+            border-radius: 50px;
+            padding: 8px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 50px;
+            height: 50px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .toggle-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        .toggle-icon {
+            font-size: 1.2rem;
+            color: var(--text-color);
+            transition: all 0.3s ease;
+        }
+    </style>
+</head>
+<body class="dark-mode">
+
+<div class="theme-toggle">
+    <div class="toggle-btn" id="themeToggle">
+        <i class="toggle-icon fas fa-moon"></i>
+    </div>
+</div>
+
+<div class="glass-card">
+    <h2 class="card-title">Login</h2>
+
+    <div th:if="${param.error}" class="alert alert-danger py-2 mb-3 d-flex align-items-center">
+        <i class="fas fa-exclamation-circle me-2"></i>
+        Invalid email or password
+    </div>
+
+    <form th:action="@{/login}" method="post">
+        <div class="input-group">
+            <span class="input-icon"><i class="fas fa-envelope"></i></span>
+            <label for="username" class="form-label">Email</label>
+            <input type="email" name="username" id="username" class="form-control" required autofocus>
+        </div>
+
+        <div class="input-group">
+            <span class="input-icon"><i class="fas fa-lock"></i></span>
+            <label for="password" class="form-label">Password</label>
+            <input type="password" name="password" id="password" class="form-control" required>
+        </div>
+
+        <div class="text-end mb-3">
+            <a th:href="@{/forgot-password}" class="forgot-password">
+                <i class="fas fa-question-circle me-1"></i>Forgot password?
+            </a>
+        </div>
+
+        <button type="submit" class="btn btn-animated">
+            <span><i class="fas fa-sign-in-alt me-2"></i>Login</span>
+        </button>
+
+        <p class="signup-link mt-3 text-center">
+            Don't have an account?
+            <a th:href="@{/signup}" class="signup-link-text">Sign up here</a>
+        </p>
+    </form>
+</div>
+
+<script>
+    const btn = document.querySelector('.btn-animated');
+    btn.addEventListener('mousemove', e => {
+        const rect = btn.getBoundingClientRect();
+        btn.style.setProperty('--x', `${e.clientX - rect.left}px`);
+        btn.style.setProperty('--y', `${e.clientY - rect.top}px`);
+    });
+
+    document.addEventListener('DOMContentLoaded', () => {
+        const canvas = document.createElement('canvas');
+        canvas.style.position = 'fixed';
+        canvas.style.top = '0';
+        canvas.style.left = '0';
+        canvas.style.width = '100%';
+        canvas.style.height = '100%';
+        canvas.style.zIndex = '-1';
+        canvas.style.pointerEvents = 'none';
+        document.body.appendChild(canvas);
+
+        const ctx = canvas.getContext('2d');
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        const particles = [];
+        const particleCount = 30;
+
+        for (let i = 0; i < particleCount; i++) {
+            particles.push({
+                x: Math.random() * canvas.width,
+                y: Math.random() * canvas.height,
+                size: Math.random() * 3 + 1,
+                speedX: Math.random() * 0.5 - 0.25,
+                speedY: Math.random() * 0.5 - 0.25,
+                color: document.body.classList.contains('dark-mode') 
+                    ? `rgba(255, 255, 255, ${Math.random() * 0.3 + 0.1})`
+                    : `rgba(0, 0, 0, ${Math.random() * 0.2 + 0.1})`
+            });
+        }
+
+        function animateParticles() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            for (let i = 0; i < particles.length; i++) {
+                const p = particles[i];
+                
+                ctx.beginPath();
+                ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+                ctx.fillStyle = p.color;
+                ctx.fill();
+                
+                p.x += p.speedX;
+                p.y += p.speedY;
+                
+                if (p.x < 0 || p.x > canvas.width) p.speedX *= -1;
+                if (p.y < 0 || p.y > canvas.height) p.speedY *= -1;
+            }
+            
+            requestAnimationFrame(animateParticles);
+        }
+
+        animateParticles();
+
+        window.addEventListener('resize', () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        });
+
+        // Theme toggle functionality
+        const themeToggle = document.getElementById('themeToggle');
+        const toggleIcon = themeToggle.querySelector('.toggle-icon');
+        
+        // Check for saved theme preference
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme) {
+            document.body.className = savedTheme;
+            updateToggleIcon();
+        }
+        
+        themeToggle.addEventListener('click', () => {
+            document.body.classList.toggle('dark-mode');
+            document.body.classList.toggle('light-mode');
+            
+            // Update particles color based on theme
+            particles.forEach(p => {
+                p.color = document.body.classList.contains('dark-mode') 
+                    ? `rgba(255, 255, 255, ${Math.random() * 0.3 + 0.1})`
+                    : `rgba(0, 0, 0, ${Math.random() * 0.2 + 0.1})`;
+            });
+            
+            // Save preference
+            localStorage.setItem('theme', document.body.className);
+            
+            updateToggleIcon();
+        });
+        
+        function updateToggleIcon() {
+            if (document.body.classList.contains('dark-mode')) {
+                toggleIcon.classList.remove('fa-sun');
+                toggleIcon.classList.add('fa-moon');
+            } else {
+                toggleIcon.classList.remove('fa-moon');
+                toggleIcon.classList.add('fa-sun');
+            }
+        }
+    });
+</script>
+
+</body>
+</html>

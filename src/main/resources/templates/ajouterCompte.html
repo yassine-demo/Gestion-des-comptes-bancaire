@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ajouter Compte</title>
+
+    <!-- Bootstrap & Icon Fonts -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Custom Styling -->
+    <style>
+        body {
+            margin: 0;
+            min-height: 100vh;
+            font-family: 'Segoe UI', sans-serif;
+            color: #fff;
+            background: linear-gradient(-45deg, #0f2027, #203a43, #2c5364, rgb(36, 80, 98), #0f2027);
+            background-size: 400% 400%;
+            animation: gradientBG 20s ease infinite;
+        }
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .form-container {
+            max-width: 600px;
+            margin: 5rem auto;
+        }
+
+        .glass-form {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            box-shadow: 0 8px 32px rgb(0, 117, 117);
+            padding: 3rem 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+        }
+
+        .form-title {
+            font-size: 2rem;
+            font-weight: bold;
+            margin-bottom: 2rem;
+            text-align: center;
+            color: rgba(255, 255, 255, 0.9);
+            text-shadow: 0 2px 10px rgba(0, 117, 117, 0.7);
+        }
+
+        label {
+            font-weight: 500;
+            color: rgba(255, 255, 255, 0.85);
+        }
+
+        .form-control {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            border: none;
+            border-radius: 10px;
+        }
+
+        .form-control:focus {
+            box-shadow: 0 0 10px rgba(0, 117, 117, 0.6);
+            background: rgba(255, 255, 255, 0.15);
+            color: white;
+        }
+
+        .btn-animated {
+            position: relative;
+            overflow: hidden;
+            color: #fff;
+            border: none;
+            height: 48px;
+            font-weight: 600;
+            background: rgba(17, 17, 17, 0.7);
+            transition: all 0.3s ease;
+            border-radius: 8px;
+            width: 100%;
+            margin-top: 2rem;
+        }
+
+        .btn-animated::before {
+            content: '';
+            position: absolute;
+            top: var(--y, 0);
+            left: var(--x, 0);
+            width: 260%;
+            height: 260%;
+            background: radial-gradient(circle at center, rgba(32, 58, 67, 0.8), rgb(0, 117, 117), rgb(31, 60, 71));
+            transform: translate(-50%, -50%);
+            transition: opacity 0.3s;
+            z-index: 1;
+            opacity: 0;
+            border-radius: 50%;
+        }
+
+        .btn-animated:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .btn-animated:hover::before {
+            opacity: 1;
+        }
+
+        .btn-animated span {
+            position: relative;
+            z-index: 2;
+        }
+    </style>
+</head>
+
+<body>
+    <div th:replace="navbar :: navbar"></div>
+
+    <div class="form-container">
+        <div class="glass-form">
+            <h2 class="form-title"><i class="fas fa-user-plus me-2"></i>Ajouter un Compte</h2>
+
+            <form th:action="@{ajouter}" method="post" th:object="${compte}">
+                <div class="mb-3">
+                    <label for="titulaire" class="form-label">Titulaire :</label>
+                    <input type="text" th:field="*{titulaire}" id="titulaire" class="form-control" required />
+                </div>
+
+                <div class="mb-3">
+                    <label for="solde" class="form-label">Solde :</label>
+                    <input type="number" step="0.01" th:field="*{solde}" id="solde" class="form-control" required />
+                </div>
+
+                <button type="submit" class="btn btn-animated"><span><i class="fas fa-check-circle me-2"></i>Valider</span></button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Button Animation -->
+    <script>
+        document.querySelectorAll('.btn-animated').forEach(btn => {
+            btn.addEventListener('mousemove', e => {
+                const rect = btn.getBoundingClientRect();
+                btn.style.setProperty('--x', `${e.clientX - rect.left}px`);
+                btn.style.setProperty('--y', `${e.clientY - rect.top}px`);
+            });
+        });
+    </script>
+
+    <!-- Particles Background -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const canvas = document.createElement('canvas');
+            canvas.style.position = 'fixed';
+            canvas.style.top = '0';
+            canvas.style.left = '0';
+            canvas.style.width = '100%';
+            canvas.style.height = '100%';
+            canvas.style.zIndex = '-1';
+            canvas.style.pointerEvents = 'none';
+            document.body.appendChild(canvas);
+
+            const ctx = canvas.getContext('2d');
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+
+            const particles = [];
+            const particleCount = 40;
+
+            for (let i = 0; i < particleCount; i++) {
+                particles.push({
+                    x: Math.random() * canvas.width,
+                    y: Math.random() * canvas.height,
+                    size: Math.random() * 3 + 1,
+                    speedX: Math.random() * 0.5 - 0.25,
+                    speedY: Math.random() * 0.5 - 0.25,
+                    color: `rgba(255, 255, 255, ${Math.random() * 0.3 + 0.1})`
+                });
+            }
+
+            function animateParticles() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                for (let p of particles) {
+                    ctx.beginPath();
+                    ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+                    ctx.fillStyle = p.color;
+                    ctx.fill();
+
+                    p.x += p.speedX;
+                    p.y += p.speedY;
+
+                    if (p.x < 0 || p.x > canvas.width) p.speedX *= -1;
+                    if (p.y < 0 || p.y > canvas.height) p.speedY *= -1;
+                }
+                requestAnimationFrame(animateParticles);
+            }
+
+            animateParticles();
+
+            window.addEventListener('resize', () => {
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
+            });
+        });
+    </script>
+</body>
+</html>
